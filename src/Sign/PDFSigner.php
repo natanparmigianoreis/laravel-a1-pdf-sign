@@ -14,7 +14,7 @@ use setasign\Fpdi\Tcpdf\Fpdi;
 use Symfony\Component\HttpFoundation\BinaryFileResponse;
 use Throwable;
 
-class SignaturePdf
+class PDFSigner
 {
     const
         MODE_DOWNLOAD = 'MODE_DOWNLOAD',
@@ -22,7 +22,7 @@ class SignaturePdf
 
     private Fpdi $pdf;
 
-    private ManageCert $cert;
+    private ManagedCertificate $cert;
 
     private string $pdfPath, $mode, $fileName;
 
@@ -40,11 +40,11 @@ class SignaturePdf
      * @throws Invalidx509PrivateKeyException
      */
     public function __construct(
-        string     $pdfPath,
-        ManageCert $cert,
-        string     $mode = self::MODE_RESOURCE,
-        string     $fileName = '',
-        bool       $hasSignedSuffix = true)
+        string             $pdfPath,
+        ManagedCertificate $cert,
+        string             $mode = self::MODE_RESOURCE,
+        string             $fileName = '',
+        bool               $hasSignedSuffix = true)
     {
         /**
          * @throws FileNotFoundException
@@ -79,7 +79,7 @@ class SignaturePdf
         ?string $location = null,
         ?string $reason = null,
         ?string $contactInfo = null
-    ): SignaturePdf
+    ): PDFSigner
     {
         $info = [];
         $name && ($info['Name'] = $name);
@@ -101,7 +101,7 @@ class SignaturePdf
         string $pageFormat = 'A4',
         bool   $unicode = true,
         string $encoding = 'UTF-8'
-    ): SignaturePdf
+    ): PDFSigner
     {
         $this->pdf = new Fpdi($orientation, $unit, $pageFormat, $unicode, $encoding);
         return $this;
@@ -114,19 +114,19 @@ class SignaturePdf
         float  $imageW = 50,
         float  $imageH = 0,
         int    $page = -1
-    ): SignaturePdf
+    ): PDFSigner
     {
         $this->image = compact('imagePath', 'pageX', 'pageY', 'imageW', 'imageH', 'page');
         return $this;
     }
 
-    public function setSealImgOnEveryPages(bool $hasSealImgOnEveryPages = true): SignaturePdf
+    public function setSealImgOnEveryPages(bool $hasSealImgOnEveryPages = true): PDFSigner
     {
         $this->hasSealImgOnEveryPages = $hasSealImgOnEveryPages;
         return $this;
     }
 
-    public function setFileName(string $fileName): SignaturePdf
+    public function setFileName(string $fileName): PDFSigner
     {
         $ext            = explode('.', $fileName);
         $ext            = end($ext);
@@ -134,7 +134,7 @@ class SignaturePdf
         return $this;
     }
 
-    public function setHasSignedSuffix(bool $hasSignedSuffix): SignaturePdf
+    public function setHasSignedSuffix(bool $hasSignedSuffix): PDFSigner
     {
         $this->hasSignedSuffix = $hasSignedSuffix;
         return $this;
@@ -165,7 +165,7 @@ class SignaturePdf
      * @throws PdfTypeException
      * @throws PdfReaderException
      */
-    public function signature(): string|BinaryFileResponse
+    public function sign(): string|BinaryFileResponse
     {
         $pageCount = $this->pdf->setSourceFile($this->pdfPath);
 

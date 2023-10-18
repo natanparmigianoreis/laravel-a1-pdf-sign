@@ -8,7 +8,7 @@ use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidCertificateContentException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPFXException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManageCert;
+use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
 use LSNepomuceno\LaravelA1PdfSign\Tests\TestCase;
 
 class CommandsTest extends TestCase
@@ -23,7 +23,7 @@ class CommandsTest extends TestCase
      */
     public function testWhenTheSignatureCommandIsSuccessfullyCompleted()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         list($pfxPath, $pass) = $cert->makeDebugCertificate(true);
         $pdfPath    = __DIR__ . '/Resources/test.pdf';
         $fileName   = a1TempDir(true, '.pdf');
@@ -69,7 +69,7 @@ class CommandsTest extends TestCase
      */
     public function testWhenASignedPdfIsSuccessfullyValidated()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         list($pfxPath, $pass) = $cert->makeDebugCertificate(true);
 
         $signed  = signPdfFromFile($pfxPath, $pass, __DIR__ . '/Resources/test.pdf');

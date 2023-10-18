@@ -12,7 +12,7 @@ use LSNepomuceno\LaravelA1PdfSign\Exceptions\{CertificateOutputNotFoundException
     Invalidx509PrivateKeyException,
     ProcessRunTimeException
 };
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManageCert;
+use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
 use OpenSSLCertificate;
 
 class ManageCertTest extends TestCase
@@ -27,7 +27,7 @@ class ManageCertTest extends TestCase
      */
     public function testValidateCertificateStructureFromPfxFile()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->makeDebugCertificate();
 
         $this->assertInstanceOf(CertificateProcessed::class, $cert->getCert());
@@ -58,7 +58,7 @@ class ManageCertTest extends TestCase
     {
         $this->expectException(FileNotFoundException::class);
 
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->fromPfx('imaginary/path/to/file.pfx', '12345');
     }
 
@@ -73,7 +73,7 @@ class ManageCertTest extends TestCase
     {
         $this->expectException(InvalidPFXException::class);
 
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->fromPfx('imaginary/path/to/file.pfz', '12345');
     }
 
@@ -87,7 +87,7 @@ class ManageCertTest extends TestCase
      */
     public function testValidateEncryperInstanceAndResources()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->makeDebugCertificate();
 
         $this->assertInstanceOf(Encrypter::class, $cert->getEncrypter());
@@ -107,7 +107,7 @@ class ManageCertTest extends TestCase
     {
         $this->expectException(ProcessRunTimeException::class);
 
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->makeDebugCertificate(false, true);
     }
 
@@ -121,7 +121,7 @@ class ManageCertTest extends TestCase
      */
     public function testValidatesIfThePfxFileWillBeDeletedAfterBeingPreserved()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         list($pfxPath, $pass) = $cert->makeDebugCertificate(true);
 
         $cert->setPreservePfx()->fromPfx($pfxPath, $pass);

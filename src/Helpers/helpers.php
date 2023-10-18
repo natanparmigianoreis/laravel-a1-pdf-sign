@@ -5,20 +5,20 @@ use Illuminate\Support\{Facades\File, Str};
 use LSNepomuceno\LaravelA1PdfSign\Entities\EncryptedCertificate;
 use LSNepomuceno\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\{ManageCert, SignaturePdf, ValidatePdfSignature};
+use LSNepomuceno\LaravelA1PdfSign\Sign\{ManagedCertificate, PDFSigner, ValidatePdfSignature};
 use Symfony\Component\Process\Process;
 
 if (!function_exists('signPdf')) {
     /**
      * @throws Throwable
      */
-    function signPdfFromFile(string $pfxPath, string $password, string $pdfPath, string $mode = SignaturePdf::MODE_RESOURCE)
+    function signPdfFromFile(string $pfxPath, string $password, string $pdfPath, string $mode = PDFSigner::MODE_RESOURCE)
     {
-        return (new SignaturePdf(
+        return (new PDFSigner(
             $pdfPath,
-            (new ManageCert)->fromPfx($pfxPath, $password),
+            (new ManagedCertificate)->fromPfx($pfxPath, $password),
             $mode
-        ))->signature();
+        ))->sign();
     }
 }
 
@@ -26,13 +26,13 @@ if (!function_exists('signPdfFromUpload')) {
     /**
      * @throws Throwable
      */
-    function signPdfFromUpload(UploadedFile $uploadedPfx, string $password, string $pdfPath, string $mode = SignaturePdf::MODE_RESOURCE)
+    function signPdfFromUpload(UploadedFile $uploadedPfx, string $password, string $pdfPath, string $mode = PDFSigner::MODE_RESOURCE)
     {
-        return (new SignaturePdf(
+        return (new PDFSigner(
             $pdfPath,
-            (new ManageCert)->fromUpload($uploadedPfx, $password),
+            (new ManagedCertificate)->fromUpload($uploadedPfx, $password),
             $mode
-        ))->signature();
+        ))->sign();
     }
 }
 
@@ -42,7 +42,7 @@ if (!function_exists('encryptCertData')) {
      */
     function encryptCertData($uploadedOrPfxPath, string $password): EncryptedCertificate
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
 
         if ($uploadedOrPfxPath instanceof UploadedFile) {
             $cert->fromUpload($uploadedOrPfxPath, $password);
@@ -62,9 +62,9 @@ if (!function_exists('decryptCertData')) {
     /**
      * @throws Throwable
      */
-    function decryptCertData(string $hashKey, string $encryptCert, string $password, bool $isBase64 = false): ManageCert
+    function decryptCertData(string $hashKey, string $encryptCert, string $password, bool $isBase64 = false): ManagedCertificate
     {
-        $cert = (new ManageCert)->setHashKey($hashKey);
+        $cert = (new ManagedCertificate)->setHashKey($hashKey);
         $uuid = Str::orderedUuid();
         $pfxName = "{$cert->getTempDir()}{$uuid}.pfx";
 

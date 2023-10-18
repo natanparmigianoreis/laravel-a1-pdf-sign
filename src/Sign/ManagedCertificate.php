@@ -15,7 +15,7 @@ use LSNepomuceno\LaravelA1PdfSign\Exceptions\{CertificateOutputNotFoundException
     ProcessRunTimeException};
 use OpenSSLCertificate;
 
-class ManageCert
+class ManagedCertificate
 {
     private string $tempDir, $originalCertContent, $password, $hashKey;
 

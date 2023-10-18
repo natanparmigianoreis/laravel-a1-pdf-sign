@@ -11,9 +11,9 @@ use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPdfSignModeTypeException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPFXException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
 use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManageCert;
+use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
 use LSNepomuceno\LaravelA1PdfSign\Sign\SealImage;
-use LSNepomuceno\LaravelA1PdfSign\Sign\SignaturePdf;
+use LSNepomuceno\LaravelA1PdfSign\Sign\PDFSigner;
 use Throwable;
 
 class SealImageTest extends TestCase
@@ -29,7 +29,7 @@ class SealImageTest extends TestCase
      */
     public function testGenerateImageFromCertFile()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->makeDebugCertificate();
 
         $image = SealImage::fromCert($cert);
@@ -55,7 +55,7 @@ class SealImageTest extends TestCase
      */
     public function testInsertSealImageOnPdfFile()
     {
-        $cert = new ManageCert;
+        $cert = new ManagedCertificate;
         $cert->makeDebugCertificate();
 
         $image = SealImage::fromCert($cert);
@@ -65,9 +65,9 @@ class SealImageTest extends TestCase
 
         $pdfPath = a1TempDir(true, '.pdf');
         try {
-            $pdf = new SignaturePdf(__DIR__ . '/Resources/test.pdf', $cert);
+            $pdf = new PDFSigner(__DIR__ . '/Resources/test.pdf', $cert);
             $resource = $pdf->setImage($imagePath)
-                            ->signature();
+                            ->sign();
             File::put($pdfPath, $resource);
         } catch (Throwable $e) {
             throw new $e;

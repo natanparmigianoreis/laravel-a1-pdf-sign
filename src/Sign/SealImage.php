@@ -33,10 +33,10 @@ class SealImage
     }
 
     public static function fromCert(
-        ManageCert $cert,
-        string     $fontSize = self::FONT_SIZE_LARGE,
-        bool       $showDueDate = false,
-        string     $dueDateFormat = 'd/m/Y H:i:s'
+        ManagedCertificate $cert,
+        string             $fontSize = self::FONT_SIZE_LARGE,
+        bool               $showDueDate = false,
+        string             $dueDateFormat = 'd/m/Y H:i:s'
     ): string
     {
         $subject    = new Fluent($cert->getCert()->data['subject']);
