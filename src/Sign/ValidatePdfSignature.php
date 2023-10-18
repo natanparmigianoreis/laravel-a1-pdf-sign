@@ -107,6 +107,7 @@ class ValidatePdfSignature
         $content      = $this->plainTextContent;
         $parsed = openssl_x509_read($content);
         $info = openssl_x509_parse($parsed);
+        $fingerprint = openssl_x509_fingerprint($parsed);
 
         $finalContent['validated'] = true;
 
@@ -117,6 +118,7 @@ class ValidatePdfSignature
             'validFrom' => $info['validFrom_time_t'],
             'validTo' => $info['validTo_time_t'],
             'hash' => $info['hash'],
+            'fingerprint' => $fingerprint
         ];
 
         return new ValidatedSignedPDF(
