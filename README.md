@@ -63,6 +63,7 @@
 <p align="center">This project is a fork from Lucas Nepomuceno's amazing work, it is intended to fix some linguistical quirks in an opinionated way, and provide AWS Lambda support by means of changing the temp directory to the unix default.</p>
 <p align="center">In no way do i intend to take credit for his intelectual work, and if you feel the need to support the author, please, use this BuyMeACoffe link below, which i left unchanged from the source repository.</p>
 <p align="center">This repository is kept public in compliance with the source material license, which is kept.</p>
+<p align="center">The class namespaces have been changed in interest of avoiding conflicts with the original package during migration.</p>
 
 <h1 align="center">Project supported by JetBrains</h1>
 <h3 align="center">Special thanks to the team at JetBrains for supporting Open Source projects with licenses to use.</h3>
