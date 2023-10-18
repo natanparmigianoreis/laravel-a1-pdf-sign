@@ -103,37 +103,25 @@ class ValidatePdfSignature
     private function convertPlainTextToObject(): ValidatedSignedPDF
     {
         $finalContent = [];
-        $delimiter    = '|CROP|';
+
         $content      = $this->plainTextContent;
-        $content      = preg_replace('/(-----BEGIN .+?-----(?s).+?-----END .+?-----)/mi', $delimiter, $content);
-        $content      = preg_replace('/(\s\s+|\\n|\\r)/', ' ', $content);
-        $content      = array_filter(explode($delimiter, $content), 'trim');
-        $content      = (array)array_map(fn($data) => $this->processDataToInfo($data), $content)[0];
+        $parsed = openssl_x509_read($content);
+        $info = openssl_x509_parse($parsed);
 
-        foreach ($content as $value) {
-            $val = $value[key($value)];
-            $key = &$finalContent[key($value)];
+        $finalContent['validated'] = true;
 
-            !in_array($val, ($key ?? [])) && ($key[] = $val);
-        }
+        $finalContent['data'] = [
+            'subject' => $info['subject'],
+            'issuer' => $info['issuer'],
+            'purposes' => $info['purposes'],
+            'validFrom' => $info['validFrom_time_t'],
+            'validTo' => $info['validTo_time_t'],
+            'hash' => $info['hash'],
+        ];
 
-        $finalContent['validated'] = !!count(array_intersect_key(array_flip(['OU', 'CN']), $finalContent));
-        return new ValidatedSignedPDF($finalContent['validated'], Arr::except($finalContent, 'validated'));
-    }
-
-    private function processDataToInfo(string $data): array
-    {
-        /** it allows to split  by "," except when "," inside of quoutes */
-        $data = preg_split('/\s*,\s*(?=(?:[^"]*"[^"]*")*[^"]*$)/', trim($data));
-
-        $finalData = [];
-
-        foreach ($data as $info) {
-            $infoTemp = explode(' = ', trim($info));
-            if (isset($infoTemp[0]) && $infoTemp[1]) {
-                $finalData[] = [$infoTemp[0] => $infoTemp[1]];
-            }
-        }
-        return $finalData;
+        return new ValidatedSignedPDF(
+            $finalContent['validated'],
+            $finalContent['data']
+        );
     }
 }
