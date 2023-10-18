@@ -1,18 +1,18 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Tests;
+namespace NatanParmigiano\LaravelA1PdfSign\Tests;
 
 use Illuminate\Encryption\Encrypter;
 use Illuminate\Support\Facades\File;
-use LSNepomuceno\LaravelA1PdfSign\Entities\CertificateProcessed;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\{CertificateOutputNotFoundException,
+use NatanParmigiano\LaravelA1PdfSign\Entities\CertificateProcessed;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\{CertificateOutputNotFoundException,
     FileNotFoundException,
     InvalidCertificateContentException,
     InvalidPFXException,
     Invalidx509PrivateKeyException,
     ProcessRunTimeException
 };
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
+use NatanParmigiano\LaravelA1PdfSign\Sign\ManagedCertificate;
 use OpenSSLCertificate;
 
 class ManageCertTest extends TestCase

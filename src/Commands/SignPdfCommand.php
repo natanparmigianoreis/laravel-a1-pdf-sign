@@ -1,6 +1,6 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Commands;
+namespace NatanParmigiano\LaravelA1PdfSign\Commands;
 
 use Illuminate\Console\Command;
 use Illuminate\Support\Facades\File;

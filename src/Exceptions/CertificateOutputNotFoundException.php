@@ -1,6 +1,6 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Exceptions;
+namespace NatanParmigiano\LaravelA1PdfSign\Exceptions;
 
 use Exception;
 use Stringable;

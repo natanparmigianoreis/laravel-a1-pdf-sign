@@ -1,9 +1,9 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Tests\Sign\ValidatePdfSignature;
+namespace NatanParmigiano\LaravelA1PdfSign\Tests\Sign\ValidatePdfSignature;
 
-use LSNepomuceno\LaravelA1PdfSign\Sign\ValidatePdfSignature;
-use LSNepomuceno\LaravelA1PdfSign\Tests\TestCase;
+use NatanParmigiano\LaravelA1PdfSign\Sign\ValidatePdfSignature;
+use NatanParmigiano\LaravelA1PdfSign\Tests\TestCase;
 use ReflectionMethod;
 
 class ProcessDataInfoFunctionTest extends TestCase
@@ -38,7 +38,7 @@ class ProcessDataInfoFunctionTest extends TestCase
     public function testProcessDataToInfoFunction(array $expectedResponse, string $content)
     {
         $method = new ReflectionMethod(
-            '\LSNepomuceno\LaravelA1PdfSign\Sign\ValidatePdfSignature',
+            '\NatanParmigiano\LaravelA1PdfSign\Sign\ValidatePdfSignature',
             'processDataToInfo'
         );
         $method->setAccessible(true);

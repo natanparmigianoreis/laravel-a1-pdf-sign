@@ -47,7 +47,7 @@
   },
   "autoload": {
     "psr-4": {
-      "LSNepomuceno\\LaravelA1PdfSign\\": "./src"
+      "NatanParmigiano\\LaravelA1PdfSign\\": "./src"
     },
     "files": [
       "src/Helpers/helpers.php"
@@ -55,7 +55,7 @@
   },
   "autoload-dev": {
     "psr-4": {
-      "LSNepomuceno\\LaravelA1PdfSign\\Tests\\": "./tests"
+      "NatanParmigiano\\LaravelA1PdfSign\\Tests\\": "./tests"
     }
   },
   "scripts": {
@@ -64,14 +64,13 @@
   "extra": {
     "laravel": {
       "providers": [
-        "LSNepomuceno\\LaravelA1PdfSign\\LaravelA1PdfSignServiceProvider"
+        "NatanParmigiano\\LaravelA1PdfSign\\LaravelA1PdfSignServiceProvider"
       ]
     }
   },
   "suggest": {
     "ext-gd": "To use GD library based image processing.",
-    "ext-imagick": "To use Imagick based image processing.",
-    "lsnepomuceno/laravel-brazilian-ceps": "A package for querying zip codes for Brazilian addresses."
+    "ext-imagick": "To use Imagick based image processing."
   },
   "require-dev": {
     "orchestra/testbench": "^8",

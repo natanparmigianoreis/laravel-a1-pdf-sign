@@ -1,6 +1,6 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Entities;
+namespace NatanParmigiano\LaravelA1PdfSign\Entities;
 
 use Illuminate\Contracts\Support\Arrayable;
 

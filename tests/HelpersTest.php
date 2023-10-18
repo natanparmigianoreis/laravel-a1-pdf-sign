@@ -1,17 +1,17 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Tests;
+namespace NatanParmigiano\LaravelA1PdfSign\Tests;
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\Facades\File;
 use Illuminate\Support\Str;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\CertificateOutputNotFoundException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\FileNotFoundException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidCertificateContentException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPFXException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\CertificateOutputNotFoundException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\FileNotFoundException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\InvalidCertificateContentException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\InvalidPFXException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
+use NatanParmigiano\LaravelA1PdfSign\Sign\ManagedCertificate;
 use Throwable;
 
 class HelpersTest extends TestCase

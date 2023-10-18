@@ -2,10 +2,10 @@
 
 use Illuminate\Http\UploadedFile;
 use Illuminate\Support\{Facades\File, Str};
-use LSNepomuceno\LaravelA1PdfSign\Entities\EncryptedCertificate;
-use LSNepomuceno\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\{ManagedCertificate, PDFSigner, ValidatePdfSignature};
+use NatanParmigiano\LaravelA1PdfSign\Entities\EncryptedCertificate;
+use NatanParmigiano\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
+use NatanParmigiano\LaravelA1PdfSign\Sign\{ManagedCertificate, PDFSigner, ValidatePdfSignature};
 use Symfony\Component\Process\Process;
 
 if (!function_exists('signPdf')) {

@@ -1,19 +1,19 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Tests;
+namespace NatanParmigiano\LaravelA1PdfSign\Tests;
 
 use Illuminate\Support\Facades\File;
 use Intervention\Image\ImageManager as IMG;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\CertificateOutputNotFoundException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\FileNotFoundException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidCertificateContentException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPdfSignModeTypeException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\InvalidPFXException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
-use LSNepomuceno\LaravelA1PdfSign\Sign\ManagedCertificate;
-use LSNepomuceno\LaravelA1PdfSign\Sign\SealImage;
-use LSNepomuceno\LaravelA1PdfSign\Sign\PDFSigner;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\CertificateOutputNotFoundException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\FileNotFoundException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\InvalidCertificateContentException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\InvalidPdfSignModeTypeException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\InvalidPFXException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\Invalidx509PrivateKeyException;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\ProcessRunTimeException;
+use NatanParmigiano\LaravelA1PdfSign\Sign\ManagedCertificate;
+use NatanParmigiano\LaravelA1PdfSign\Sign\SealImage;
+use NatanParmigiano\LaravelA1PdfSign\Sign\PDFSigner;
 use Throwable;
 
 class SealImageTest extends TestCase

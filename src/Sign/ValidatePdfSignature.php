@@ -1,10 +1,10 @@
 <?php
 
-namespace LSNepomuceno\LaravelA1PdfSign\Sign;
+namespace NatanParmigiano\LaravelA1PdfSign\Sign;
 
 use Illuminate\Support\{Arr, Facades\File, Str};
-use LSNepomuceno\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
-use LSNepomuceno\LaravelA1PdfSign\Exceptions\{FileNotFoundException,
+use NatanParmigiano\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
+use NatanParmigiano\LaravelA1PdfSign\Exceptions\{FileNotFoundException,
     HasNoSignatureOrInvalidPkcs7Exception,
     InvalidPdfFileException,
     ProcessRunTimeException

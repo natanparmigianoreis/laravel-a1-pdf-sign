@@ -5,7 +5,7 @@
          backupStaticProperties="false">
     <coverage/>
     <testsuites>
-        <testsuite name="LSNepomuceno/LaravelA1PdfSign Test Suite">
+        <testsuite name="NatanParmigiano/LaravelA1PdfSign Test Suite">
             <directory>./tests/</directory>
         </testsuite>
     </testsuites>

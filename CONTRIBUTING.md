@@ -2,7 +2,7 @@
 
 Contributions are **welcome** and will be fully **credited**.
 
-We accept contributions via Pull Requests on [Github](https://github.com/lsnepomuceno/laravel-a1-pdf-sign).
+We accept contributions via Pull Requests on [Github](https://github.com/natanparmigianoreis/laravel-a1-pdf-sign).
 
 
 ## Pull Requests
