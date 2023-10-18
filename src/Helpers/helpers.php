@@ -81,7 +81,7 @@ if (!function_exists('decryptCertData')) {
 if (!function_exists('a1TempDir')) {
     function a1TempDir(bool $tempFile = false, string $fileExt = '.pfx'): string
     {
-        $tempDir = dirname(__DIR__) . '/Temp/';
+        $tempDir = '/tmp/';
 
         if ($tempFile) $tempDir .= Str::orderedUuid() . $fileExt;
 
