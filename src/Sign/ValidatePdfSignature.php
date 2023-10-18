@@ -3,6 +3,7 @@
 namespace NatanParmigiano\LaravelA1PdfSign\Sign;
 
 use Illuminate\Support\{Arr, Facades\File, Str};
+use Doctrine\Common\Cache\Psr6\InvalidArgument;
 use NatanParmigiano\LaravelA1PdfSign\Entities\ValidatedSignedPDF;
 use NatanParmigiano\LaravelA1PdfSign\Exceptions\{FileNotFoundException,
     HasNoSignatureOrInvalidPkcs7Exception,
@@ -10,20 +11,29 @@ use NatanParmigiano\LaravelA1PdfSign\Exceptions\{FileNotFoundException,
     ProcessRunTimeException
 };
 use Throwable;
+use function PHPUnit\Framework\isEmpty;
+use function PHPUnit\Framework\isNull;
 
 class ValidatePdfSignature
 {
-    private string $pdfPath, $plainTextContent, $pkcs7Path = '';
+    private string $pdfPath, $plainTextContent, $pkcs7Path, $CAChainPath = '';
 
     /**
      * @throws Throwable
      */
-    public static function from(string $pdfPath): ValidatedSignedPDF
+    public static function from(string $pdfPath, string $CAChainPath = null): ValidatedSignedPDF
     {
+        if (!$CAChainPath) {
+            $CAChainPathLocalVar = resource_path('certificates/default.crt');
+        } else {
+            $CAChainPathLocalVar = $CAChainPath;
+        }
+
         return (new static)->setPdfPath($pdfPath)
-                           ->extractSignatureData()
-                           ->convertSignatureDataToPlainText()
-                           ->convertPlainTextToObject();
+            ->setCAChain($CAChainPathLocalVar)
+            ->extractSignatureData()
+            ->convertSignatureDataToPlainText()
+            ->convertPlainTextToObject();
     }
 
     /**
@@ -41,6 +51,24 @@ class ValidatePdfSignature
         }
 
         $this->pdfPath = $pdfPath;
+
+        return $this;
+    }
+    /**
+     * @throws FileNotFoundException
+     * @throws InvalidPdfFileException
+     */
+    private function setCAChain(string $CAChainPath): self
+    {
+        if (!Str::of($CAChainPath)->lower()->endsWith('.crt')) {
+            throw new InvalidArgument($CAChainPath);
+        }
+
+        if (!File::exists($CAChainPath)) {
+            throw new FileNotFoundException($CAChainPath);
+        }
+
+        $this->CAChainPath = $CAChainPath;
 
         return $this;
     }
@@ -104,21 +132,43 @@ class ValidatePdfSignature
     {
         $finalContent = [];
 
-        $content      = $this->plainTextContent;
-        $parsed = openssl_x509_read($content);
-        $info = openssl_x509_parse($parsed);
-        $fingerprint = openssl_x509_fingerprint($parsed);
+        $certificateContent      = $this->plainTextContent;
+        $certificate = openssl_x509_read($certificateContent);
+        $parsedCertificate = openssl_x509_parse($certificate);
+        $certificateFingerprint = openssl_x509_fingerprint($certificate);
+
+        $trustedChainFilePath = $this->CAChainPath;
+
+        $certificateFile  = a1TempDir(tempFile: true, fileExt: '.crt');
+        $resultFile  = a1TempDir(tempFile: true, fileExt: '.txt');
+
+        File::put($certificateFile, $certificateContent);
+
+        $openSslCommand = "openssl verify -verbose -CAfile $trustedChainFilePath $certificateFile > $resultFile";
 
         $finalContent['validated'] = true;
 
+        try {
+            runCliCommandProcesses($openSslCommand);
+            $verificationResult = File::get($resultFile);
+        } catch (ProcessRunTimeException $e) {
+            $finalContent['validated'] = false;
+            $verificationResult = $e->getMessage();
+        }
+
+        if (!File::exists($resultFile)) {
+            throw new FileNotFoundException($resultFile);
+        }
+
         $finalContent['data'] = [
-            'subject' => $info['subject'],
-            'issuer' => $info['issuer'],
-            'purposes' => $info['purposes'],
-            'validFrom' => $info['validFrom_time_t'],
-            'validTo' => $info['validTo_time_t'],
-            'hash' => $info['hash'],
-            'fingerprint' => $fingerprint
+            'subject' => $parsedCertificate['subject'],
+            'issuer' => $parsedCertificate['issuer'],
+            'purposes' => $parsedCertificate['purposes'],
+            'validFrom' => $parsedCertificate['validFrom_time_t'],
+            'validTo' => $parsedCertificate['validTo_time_t'],
+            'hash' => $parsedCertificate['hash'],
+            'fingerprint' => $certificateFingerprint,
+            'verificationResult' => $verificationResult
         ];
 
         return new ValidatedSignedPDF(
